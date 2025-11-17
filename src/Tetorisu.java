@@ -38,6 +38,8 @@ class CanvasBoard extends JPanel implements KeyListener, Runnable {
 	private int speed;
 	private Thread t1;
 	private boolean started = false; 
+	private BGMPlayer bgm;
+
 
 	/* コンストラクタ */
 	CanvasBoard(int width, int height) {
@@ -53,6 +55,11 @@ class CanvasBoard extends JPanel implements KeyListener, Runnable {
 		Brk = new Block();
 		this.setFocusable(true);
 		this.addKeyListener(this);
+		
+		bgm = new BGMPlayer();
+		bgm.load("C:\\pleiades\\2024-12\\workspace\\tetorisu\\src\\sound\\bgm.wav");
+
+
 	}
 
 	public void paintComponent(Graphics g) {
@@ -244,6 +251,10 @@ class CanvasBoard extends JPanel implements KeyListener, Runnable {
 		t1 = new Thread(this);
 		//スレッド起動
 		t1.start();
+		//BGM
+		bgm.playLoop();
+		
+
 	}
 	//ゲームオーバー判定メソッド
 	public void chkGameOver(boolean isMapInfo[][]) {
@@ -259,6 +270,8 @@ class CanvasBoard extends JPanel implements KeyListener, Runnable {
 		if(flag == true) {
 			gameflag = false;
 			running = false;
+			bgm.stop();
+
 			repaint();
 		}
 	}
